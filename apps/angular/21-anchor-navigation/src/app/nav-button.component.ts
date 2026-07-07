@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'nav-button',
   template: `
-    <a [routerLink]="linkCommand.path" [fragment]="linkCommand.fragment">
+    <a [routerLink]="route()" [fragment]="fragment()">
       <ng-content />
     </a>
   `,
@@ -15,14 +15,6 @@ import { RouterLink } from '@angular/router';
   imports: [RouterLink],
 })
 export class NavButtonComponent {
-  href = input<string>('');
-
-  get linkCommand(): { path: string; fragment?: string } {
-    return {
-      path: this.href().startsWith('/') ? this.href() : '',
-      fragment: this.href().startsWith('#')
-        ? this.href().replace('#', '')
-        : undefined,
-    };
-  }
+  route = input<string>('');
+  fragment = input<string>();
 }
