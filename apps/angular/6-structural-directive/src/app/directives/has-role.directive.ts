@@ -1,47 +1,27 @@
-import {
-  Directive,
-  inject,
-  Input,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Role } from '../user.model';
-import { UserStore } from '../user.store';
+import { Directive, Input } from '@angular/core';
+import { type Role, User } from '../user.model';
+import { RoleBaseDirective } from './role-base.directive';
 
 @Directive({
-  selector: '[hasRole]',
-  standalone: true,
+  selector: '[appHasRole]',
 })
-export class HasRoleDirective {
+export class HasRoleDirective extends RoleBaseDirective {
   private requireRole: Role | Role[] | null = null;
-  private readonly userStore = inject(UserStore);
 
-  @Input() set hasRole(role: Role | Role[]) {
+  @Input() set appHasRole(role: Role | Role[]) {
     this.requireRole = role;
     this.updateView();
   }
 
-  constructor(
-    private templateRef: TemplateRef<any>,
-    private viewContainer: ViewContainerRef,
-  ) {
-    this.userStore.user$.pipe(takeUntilDestroyed()).subscribe(() => {
-      this.updateView();
-    });
-  }
+  protected isVisible(user: User | undefined): boolean {
+    if (!this.requireRole || !user) return false;
 
-  private updateView() {
-    const user = this.userStore.getCurrentUser();
     const rolesToCheck = Array.isArray(this.requireRole)
       ? this.requireRole
       : [this.requireRole];
-    const hasRole = user?.roles.some((role) => rolesToCheck.includes(role));
 
-    if (hasRole) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
-    }
+    return (
+      user.isAdmin || user?.roles.some((role) => rolesToCheck.includes(role))
+    );
   }
 }

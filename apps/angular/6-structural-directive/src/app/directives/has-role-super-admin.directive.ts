@@ -1,40 +1,19 @@
-import {
-  Directive,
-  inject,
-  Input,
-  TemplateRef,
-  ViewContainerRef,
-} from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { UserStore } from '../user.store';
+import { Directive, Input } from '@angular/core';
+import { User } from '../user.model';
+import { RoleBaseDirective } from './role-base.directive';
 
 @Directive({
-  selector: '[hasRoleSuperAdmin]',
-  standalone: true,
+  selector: '[appHasRoleSuperAdmin]',
 })
-export class HasRoleSuperAdminDirective {
-  private readonly userStore = inject(UserStore);
+export class HasRoleSuperAdminDirective extends RoleBaseDirective {
+  private enabled = true;
 
-  @Input() set hasRoleSuperAdmin(role: boolean) {
+  @Input() set appHasRoleSuperAdmin(role: boolean) {
+    this.enabled = role;
     this.updateView();
   }
 
-  constructor(
-    private templateRef: TemplateRef<any>,
-    private viewContainer: ViewContainerRef,
-  ) {
-    this.userStore.user$.pipe(takeUntilDestroyed()).subscribe(() => {
-      this.updateView();
-    });
-  }
-
-  private updateView() {
-    const user = this.userStore.getCurrentUser();
-
-    if (user?.isAdmin === true) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
-    }
+  protected isVisible(user: User | undefined): boolean {
+    return this.enabled && user?.isAdmin === true;
   }
 }

@@ -1,40 +1,28 @@
 import { inject } from '@angular/core';
+import type { CanMatchFn } from '@angular/router';
+import type { Role } from './user.model';
 import { UserStore } from './user.store';
 
-export const adminGuard = () => {
-  const userStore = inject(UserStore);
-  const user = userStore.getCurrentUser();
-  return user?.isAdmin === true;
-};
+const hasRoleGuard =
+  (...roles: Role[]): CanMatchFn =>
+  () => {
+    const user = inject(UserStore).getCurrentUser();
+    return !!user?.roles.some((r) => roles.includes(r));
+  };
 
-export const managerGuard = () => {
-  const userStore = inject(UserStore);
-  const user = userStore.getCurrentUser();
-  return user ? user?.roles.includes('MANAGER') : false;
-};
+export const adminGuard: CanMatchFn = () =>
+  !!inject(UserStore).getCurrentUser()?.isAdmin;
 
-export const writerReaderGuard = () => {
-  const userStore = inject(UserStore);
-  const user = userStore.getCurrentUser();
-  return user
-    ? user?.roles.includes('WRITER') || user?.roles.includes('READER')
-    : false;
-};
+export const managerGuard = hasRoleGuard('MANAGER');
 
-export const clientGuard = () => {
-  const userStore = inject(UserStore);
-  const user = userStore.getCurrentUser();
-  return user ? user?.roles.includes('CLIENT') : false;
-};
+export const writerReaderGuard = hasRoleGuard('WRITER', 'READER');
 
-export const everyoneGuard = () => {
-  const userStore = inject(UserStore);
-  const user = userStore.getCurrentUser();
-  return user ? user?.roles.length === 0 && user?.isAdmin === false : false;
-};
+export const clientGuard = hasRoleGuard('CLIENT');
 
-export const noUserGuard = () => {
-  const userStore = inject(UserStore);
-  const user = userStore.getCurrentUser();
-  return !user;
+export const noUserGuard: CanMatchFn = () =>
+  !inject(UserStore).getCurrentUser();
+
+export const everyoneGuard: CanMatchFn = () => {
+  const user = inject(UserStore).getCurrentUser();
+  return !!user;
 };

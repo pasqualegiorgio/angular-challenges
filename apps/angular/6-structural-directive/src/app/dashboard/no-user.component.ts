@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../button.component';
 
 @Component({
-  selector: 'no-user-dashboard',
+  selector: 'app-no-user-dashboard',
   imports: [RouterLink, ButtonComponent],
   template: `
     <p>no user selected</p>

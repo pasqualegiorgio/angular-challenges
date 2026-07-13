@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../button.component';
 
 @Component({
-  selector: 'client-dashboard',
+  selector: 'app-client-dashboard',
   imports: [RouterLink, ButtonComponent],
   template: `
     <p>dashboard for Client works!</p>

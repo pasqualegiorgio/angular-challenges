@@ -1,3 +1,4 @@
+import type { Routes } from '@angular/router';
 import {
   adminGuard,
   clientGuard,
@@ -7,7 +8,7 @@ import {
   writerReaderGuard,
 } from './guards';
 
-export const APP_ROUTES = [
+export const APP_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>

@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../button.component';
 
 @Component({
-  selector: 'writer-reader-dashboard',
+  selector: 'app-writer-reader-dashboard',
   imports: [RouterLink, ButtonComponent],
   template: `
     <p>dashboard for Writer and/or Reader works!</p>
