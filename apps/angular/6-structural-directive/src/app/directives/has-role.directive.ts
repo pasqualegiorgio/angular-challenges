@@ -21,7 +21,7 @@ export class HasRoleDirective extends RoleBaseDirective {
       : [this.requireRole];
 
     return (
-      user.isAdmin || user?.roles.some((role) => rolesToCheck.includes(role))
+      user.isAdmin || user.roles.some((role) => rolesToCheck.includes(role))
     );
   }
 }

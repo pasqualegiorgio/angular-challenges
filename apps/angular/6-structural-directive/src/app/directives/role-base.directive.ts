@@ -16,7 +16,7 @@ export abstract class RoleBaseDirective {
   private readonly templateRef = inject(TemplateRef<unknown>);
   private readonly viewContainer = inject(ViewContainerRef);
 
-  protected currentUser: User | undefined;
+  private currentUser: User | undefined;
 
   constructor() {
     this.userStore.user$.pipe(takeUntilDestroyed()).subscribe((user) => {

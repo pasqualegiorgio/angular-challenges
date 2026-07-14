@@ -8,8 +8,8 @@ import { RoleBaseDirective } from './role-base.directive';
 export class HasRoleSuperAdminDirective extends RoleBaseDirective {
   private enabled = true;
 
-  @Input() set appHasRoleSuperAdmin(role: boolean) {
-    this.enabled = role;
+  @Input() set appHasRoleSuperAdmin(enabled: boolean) {
+    this.enabled = enabled;
     this.updateView();
   }
 
