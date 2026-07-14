@@ -1,12 +1,11 @@
 /* eslint-disable @angular-eslint/directive-selector */
-import { BtnDisabledDirective } from '@angular-challenges/decoupling/brain';
+import { DECOUPLING_CORE } from '@angular-challenges/decoupling/core';
 import {
   Directive,
   effect,
   ElementRef,
   inject,
   Renderer2,
-  signal,
 } from '@angular/core';
 
 @Directive({
@@ -17,8 +16,8 @@ import {
   },
 })
 export class BtnHelmetDirective {
-  btnState = inject(BtnDisabledDirective, { self: true });
-  public state = this.btnState?.state ?? signal('disabled').asReadonly();
+  btnState = inject(DECOUPLING_CORE, { self: true });
+  public state = this.btnState;
   private renderer = inject(Renderer2);
   private element = inject(ElementRef);
 
