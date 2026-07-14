@@ -1,22 +1,24 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { UserStore } from './user.store';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { HasRoleSuperAdminDirective } from './directives/has-role-super-admin.directive';
+import { HasRoleDirective } from './directives/has-role.directive';
 
 @Component({
   selector: 'app-information',
   template: `
     <h2 class="mt-10 text-xl">Information Panel</h2>
     <!-- admin can see everything -->
-    <div>visible only for super admin</div>
-    <div>visible if manager</div>
-    <div>visible if manager and/or reader</div>
-    <div>visible if manager and/or writer</div>
-    <div>visible if client</div>
+    <div *appHasRoleSuperAdmin="true">visible only for super admin</div>
+    <div *appHasRole="'MANAGER'">visible if manager</div>
+    <div *appHasRole="['MANAGER', 'READER']">
+      visible if manager and/or reader
+    </div>
+    <div *appHasRole="['MANAGER', 'WRITER']">
+      visible if manager and/or writer
+    </div>
+    <div *appHasRole="'CLIENT'">visible if client</div>
     <div>visible for everyone</div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [HasRoleDirective, HasRoleSuperAdminDirective],
 })
-export class InformationComponent {
-  private readonly userStore = inject(UserStore);
-
-  user$ = this.userStore.user$;
-}
+export class InformationComponent {}

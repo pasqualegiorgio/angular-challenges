@@ -3,12 +3,12 @@ import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../button.component';
 
 @Component({
-  selector: 'app-manager-dashboard',
+  selector: 'app-writer-reader-dashboard',
   imports: [RouterLink, ButtonComponent],
   template: `
-    <p>dashboard for Manager works!</p>
+    <p>dashboard for Writer and/or Reader works!</p>
     <button app-button routerLink="/">Logout</button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManagerDashboardComponent {}
+export class WriterReaderDashboardComponent {}
