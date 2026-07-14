@@ -1,4 +1,4 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FakeServiceService } from './fake.service';
@@ -38,11 +38,7 @@ export class NavigationComponent {
 @Component({
   imports: [NavigationComponent],
   template: `
-    @if (info() !== null) {
-      <app-nav [menus]="getMenu(info()!)" />
-    } @else {
-      <app-nav [menus]="getMenu('')" />
-    }
+    <app-nav [menus]="menuSignal()" />
   `,
   host: {},
 })
@@ -59,4 +55,6 @@ export class MainNavigationComponent {
       { path: '/bar', name: `Bar ${prop}` },
     ];
   }
+
+  readonly menuSignal = computed(() => this.getMenu(this.info() ?? ''));
 }
