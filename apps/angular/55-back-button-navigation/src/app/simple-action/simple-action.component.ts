@@ -12,11 +12,12 @@ import { DialogBackHandler } from '../interfaces/dialog-back-handler.interface';
 })
 export class SimpleActionComponent implements DialogBackHandler {
   private readonly dialog = inject(MatDialog);
-  protected dialogRef: MatDialogRef<unknown> | null = null;
+  private dialogRef: MatDialogRef<unknown> | null = null;
 
   protected openDialog(): void {
     this.dialogRef = this.dialog.open(DialogComponent, {
       width: '250px',
+      closeOnNavigation: false,
     });
 
     this.dialogRef.afterClosed().subscribe(() => {

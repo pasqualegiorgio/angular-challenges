@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { from, map, Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { DialogComponent } from '../dialog/dialog.component';
 import { DialogBackHandler } from '../interfaces/dialog-back-handler.interface';
@@ -20,6 +20,7 @@ export class SensitiveActionComponent implements DialogBackHandler {
   protected openDialog(): void {
     this.dialogRef = this.dialog.open(DialogComponent, {
       width: '250px',
+      closeOnNavigation: false,
     });
 
     this.dialogRef.afterClosed().subscribe(() => {
@@ -40,8 +41,8 @@ export class SensitiveActionComponent implements DialogBackHandler {
       closeOnNavigation: false,
     });
 
-    return from(this.confirmationDialogRef.afterClosed()).pipe(
-      map((confirmed: boolean) => {
+    return this.confirmationDialogRef.afterClosed().pipe(
+      map((confirmed: boolean | undefined) => {
         this.confirmationDialogRef = null;
 
         if (confirmed) {
