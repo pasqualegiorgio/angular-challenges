@@ -1,5 +1,14 @@
-import { ApplicationConfig } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import {
+  ApplicationConfig,
+  inject,
+  provideAppInitializer,
+} from '@angular/core';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withViewTransitions,
+} from '@angular/router';
+import { NavigationService } from './navigation.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,6 +21,10 @@ export const appConfig: ApplicationConfig = {
         },
       ],
       withComponentInputBinding(),
+      withViewTransitions(),
     ),
+    provideAppInitializer(() => {
+      inject(NavigationService);
+    }),
   ],
 };

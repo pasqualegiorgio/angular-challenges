@@ -1,1 +1,35 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+.app-header {
+  view-transition-name: app-header;
+}
+
+.transition {
+  .image {
+    view-transition-name: image;
+  }
+
+  .blog-title {
+    view-transition-name: blog-title;
+  }
+
+  .blog-description {
+    view-transition-name: blog-description;
+  }
+
+  .user-avatar {
+    view-transition-name: user-avatar;
+  }
+
+  .angular-logo {
+    view-transition-name: angular-logo;
+  }
+
+  .user-name {
+    view-transition-name: user-name;
+  }
+
+  .user-date {
+    view-transition-name: user-date;
+  }
+}
