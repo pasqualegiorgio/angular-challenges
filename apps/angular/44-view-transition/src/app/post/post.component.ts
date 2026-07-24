@@ -6,26 +6,25 @@ import {
   input,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ThumbnailHeaderComponent } from '../blog/thumbnail-header.component';
 import { fakeTextChapters, posts } from '../data';
 import { PostHeaderComponent } from './post-header.component';
 
 @Component({
   selector: 'post',
-  imports: [
-    ThumbnailHeaderComponent,
-    NgOptimizedImage,
-    PostHeaderComponent,
-    RouterLink,
-  ],
+  imports: [NgOptimizedImage, PostHeaderComponent, RouterLink],
   template: `
-    <div class="relative w-full max-w-[800px]">
+    <div class="relative w-full max-w-[800px] transition">
       <button
         routerLink="/"
-        class="absolute left-2 top-2 z-20 rounded-md border bg-white p-2">
+        class="absolute top-2 left-2 z-20 rounded-md border bg-white p-2">
         Back
       </button>
-      <img [ngSrc]="post().image" alt="" width="960" height="540" />
+      <img
+        [ngSrc]="post().image"
+        alt=""
+        width="960"
+        height="540"
+        class="image" />
       <h2 class="p-7 text-center text-5xl">{{ post().title }}</h2>
       <post-header [date]="post().date" class="mb-20" />
       @for (chapter of fakeTextChapter; track $index) {
@@ -43,4 +42,8 @@ export default class PostComponent {
   post = computed(() => posts.filter((p) => p.id === this.id())[0]);
 
   fakeTextChapter = fakeTextChapters;
+
+  constructor() {
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  }
 }
