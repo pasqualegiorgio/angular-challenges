@@ -6,6 +6,7 @@ import {
   input,
   OnDestroy,
   output,
+  signal,
   viewChild,
 } from '@angular/core';
 import React from 'react';
@@ -28,13 +29,27 @@ export class PostComponent implements AfterViewInit, OnDestroy {
 
   private rootElement = viewChild<ElementRef<HTMLElement>>('root');
   private root?: ReturnType<typeof createRoot>;
+  private rootReady = signal(false);
 
   constructor() {
     effect(() => {
-      if (!this.root) return;
-      this.post();
-      this.isSelected();
-      this.renderReact();
+      const post = this.post();
+      const selected = this.isSelected();
+      const ready = this.rootReady();
+
+      if (!ready || !this.root) return;
+
+      this.root.render(
+        <React.StrictMode>
+          <ReactPost
+            title={post?.title}
+            description={post?.description}
+            pictureLink={post?.pictureLink}
+            selected={selected}
+            handleClick={() => this.selectPost.emit()}
+          />
+        </React.StrictMode>,
+      );
     });
   }
 
@@ -44,28 +59,10 @@ export class PostComponent implements AfterViewInit, OnDestroy {
     if (!domNode) return;
 
     this.root = createRoot(domNode);
-    this.renderReact();
+    this.rootReady.set(true);
   }
 
   ngOnDestroy(): void {
     this.root?.unmount();
-  }
-
-  private renderReact(): void {
-    if (!this.root) return;
-
-    const post = this.post();
-
-    this.root.render(
-      <React.StrictMode>
-        <ReactPost
-          title={post?.title}
-          description={post?.description}
-          pictureLink={post?.pictureLink}
-          selected={this.isSelected()}
-          handleClick={() => this.selectPost.emit()}
-        />
-      </React.StrictMode>,
-    );
   }
 }
